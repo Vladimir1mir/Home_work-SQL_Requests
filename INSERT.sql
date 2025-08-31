@@ -1,51 +1,75 @@
--- Создание таблиц базы данных музыкального сервиса
+INSERT INTO Artists (name)
+VALUES
+('Linkin Park'),
+('Nirvana'),
+('Ledy Gaga'),
+('Eminem');
 
-CREATE TABLE IF NOT EXISTS Genres (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE
-);
+INSERT INTO Genres (title)
+VALUES
+('Rock'),
+('Pop'),
+('Rap');
 
-CREATE TABLE IF NOT EXISTS Artists (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
-);
+INSERT INTO Albums (title, release_year)
+VALUES
+('Meteora', 2003),
+('Nevermind', 1991),
+('The Fame', 2008),
+('Recovery', 2009);
 
-CREATE TABLE IF NOT EXISTS Albums (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    release_year INT NOT NULL CHECK (release_year > 1900)
-);
+INSERT INTO Albums (title, release_year)
+VALUES
+('Chromatica', 2020),
+('Hybrid Theory', 2000);
 
-CREATE TABLE IF NOT EXISTS Tracks (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    duration INT NOT NULL CHECK (duration > 0), -- в секундах
-    album_id INT NOT NULL REFERENCES Albums(id)
-);
 
-CREATE TABLE IF NOT EXISTS Collections (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    release_year INT NOT NULL CHECK (release_year > 1900)
-);
+INSERT INTO Tracks (title, duration, album_id)
+VALUES
+('Somewhere I Belong', '00:03:34', 1),
+('From the inside', '00:02:56', 1),
+('Smells Like Teen Spirit', '00:05:01', 2),
+('Paparazzi', '00:03:28', 3),
+('Poker Face', '00:03:57', 3),
+('Not Afraid', '00:04:08', 4);
 
--- Связь многие-ко-многим: исполнители и жанры
-CREATE TABLE IF NOT EXISTS ArtistGenres (
-    artist_id INT REFERENCES Artists(id),
-    genre_id INT REFERENCES Genres(id),
-    PRIMARY KEY (artist_id, genre_id)
-);
+INSERT INTO Tracks (title, duration, album_id)
+VALUES
+('My December', '00:04:20', 6),
+('Crawling', '00:03:29', 6),
+('Stupid Love', '00:03:13', 5),
+('Alice', '00:02:57', 5);
 
--- Связь многие-ко-многим: исполнители и альбомы
-CREATE TABLE IF NOT EXISTS ArtistAlbums (
-    artist_id INT REFERENCES Artists(id),
-    album_id INT REFERENCES Albums(id),
-    PRIMARY KEY (artist_id, album_id)
-);
 
--- Связь многие-ко-многим: сборники и треки
-CREATE TABLE IF NOT EXISTS CollectionTracks (
-    collection_id INT REFERENCES Collections(id),
-    track_id INT REFERENCES Tracks(id),
-    PRIMARY KEY (collection_id, track_id)
-);
+INSERT INTO Compilations (title, realese_year)
+VALUES
+('Compilation 1', 2000),
+('Compilation 2', 2010),
+('Compilation 3', 2020),
+('Compilation 4', 2021);
+
+INSERT INTO ArtistGenres (artist_id, genre_id)
+VALUES
+(3, 1),
+(4, 1),
+(5, 2),
+(6, 3);
+
+INSERT INTO AlbumArtists (album_id, artist_id)
+VALUES
+(1, 3),
+(2, 4),
+(3, 5),
+(4, 6);
+
+INSERT INTO AlbumArtists (album_id, artist_id)
+VALUES
+(5, 5),
+(3, 6);
+
+INSERT INTO CompilationTracks (compilation_id, artist_id)
+VALUES
+(1, 3),
+(2, 4),
+(3, 5),
+(4, 6);
